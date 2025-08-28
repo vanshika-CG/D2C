@@ -1,7 +1,11 @@
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Smartphone, Palette, Shield, Rocket, Brain } from 'lucide-react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Zap, Smartphone, Palette, Shield, Rocket, Brain } from 'lucide-react';
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
@@ -55,17 +59,20 @@ const features = [
 ];
 
 const FeaturesTile = () => {
-  const tileRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const tileRef = useRef(null);
+  const cardsRef = useRef(null);
+  const scrollerRef = useRef(null);
 
   useEffect(() => {
     const tile = tileRef.current;
     const cards = cardsRef.current;
-    if (!tile || !cards) return;
+    const scroller = scrollerRef.current;
+    if (!tile || !cards || !scroller) return;
 
     const ctx = gsap.context(() => {
-      // Tile animation
-      gsap.fromTo(tile,
+      // Tile animation (unchanged)
+      gsap.fromTo(
+        tile,
         { y: 50, opacity: 0 },
         {
           y: 0,
@@ -81,23 +88,31 @@ const FeaturesTile = () => {
         }
       );
 
-      // Stagger card animations
-      gsap.fromTo(cards.children,
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.15,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: cards,
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          }
+      // Create seamless scrolling effect
+      const cardsArray = Array.from(cards.children);
+      const totalWidth = cardsArray.reduce((acc, card) => acc + card.offsetWidth + 24, 0); // 24px for gap
+
+      // Duplicate cards for seamless looping
+      cardsArray.forEach((card) => {
+        const clone = card.cloneNode(true);
+        cards.appendChild(clone);
+      });
+
+      // GSAP animation for continuous right-to-left scroll
+      gsap.to(cards, {
+        x: -totalWidth,
+        ease: "none",
+        duration: 20, // Adjust for speed
+        repeat: -1,
+        modifiers: {
+          x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth)
         }
-      );
-    }, tile);
+      });
+
+      // Pause animation on hover
+      cards.addEventListener('mouseenter', () => gsap.to(cards, { timeScale: 0 }));
+      cards.addEventListener('mouseleave', () => gsap.to(cards, { timeScale: 1 }));
+    }, scroller);
 
     return () => ctx.revert();
   }, []);
@@ -105,7 +120,7 @@ const FeaturesTile = () => {
   return (
     <motion.div
       ref={tileRef}
-      className="bento-item bento-item-wide"
+      className="bento-item bento-item-wide relative overflow-hidden"
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.3 }}
     >
@@ -121,37 +136,39 @@ const FeaturesTile = () => {
           </p>
         </div>
 
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              className={`glass-card p-4 border ${feature.border} group cursor-pointer will-change-transform`}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className={`p-3 rounded-lg ${feature.bg} w-fit mb-3 group-hover:scale-110 transition-transform duration-200`}>
-                <feature.icon className={`w-6 h-6 ${feature.color}`} />
-              </div>
-              
-              <h4 className={`font-semibold fluid-text-lg mb-2 ${feature.color}`}>
-                {feature.title}
-              </h4>
-              
-              <p className="text-muted-foreground fluid-text-sm">
-                {feature.description}
-              </p>
-              
-              <div className="mt-3 h-1 bg-border rounded-full overflow-hidden">
-                <motion.div 
-                  className={`h-full ${feature.bg.replace('/10', '/50')} origin-left`}
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: index * 0.1 }}
-                />
-              </div>
-            </motion.div>
-          ))}
+        <div ref={scrollerRef} className="overflow-hidden">
+          <div ref={cardsRef} className="flex gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                className={`glass-card p-4 border ${feature.border} group cursor-pointer will-change-transform flex-none w-64`} // Fixed width
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className={`p-3 rounded-lg ${feature.bg} w-fit mb-3 group-hover:scale-110 transition-transform duration-200`}>
+                  <feature.icon className={`w-6 h-6 ${feature.color}`} />
+                </div>
+                
+                <h4 className={`font-semibold fluid-text-lg mb-2 ${feature.color}`}>
+                  {feature.title}
+                </h4>
+                
+                <p className="text-muted-foreground fluid-text-sm">
+                  {feature.description}
+                </p>
+                
+                <div className="mt-3 h-1 bg-border rounded-full overflow-hidden">
+                  <motion.div 
+                    className={`h-full ${feature.bg.replace('/10', '/50')} origin-left`}
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 20, delay: index * 0.1 }}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </motion.div>

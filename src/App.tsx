@@ -7,6 +7,7 @@ import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import Index from "./pages/Index";
 import CreatePage from "./pages/CreatePage";
 import NotFound from "./pages/NotFound";
+import StickersPage from './pages/StickersPage';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} /> 
+            <Route path="/stickers" element={<StickersPage />} />
             <Route path="/create" element={<CreatePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import ParticleBackground from '../components/ParticleBackground';
 import FeaturesTile from '../components/FeaturesTile';
 import ImpactTile from '../components/ImpactTile';
-import StickersTile from '../components/StickersTile';
 import ThemeToggleTile from '../components/ThemeToggleTile';
 import FooterTile from '../components/FooterTile';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -17,13 +16,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const LandingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const heroRef = useRef<HTMLElement>(null);
-  const bentoRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef(null);
+  const bentoRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500); // Reduced loading time for better UX
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -89,6 +88,17 @@ const LandingPage = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       <ParticleBackground />
       
+      {/* Stickers Button in Top Right Corner */}
+      <Link to="/stickers" className="fixed top-4 right-4 z-50">
+        <motion.button 
+          className="btn-cyber text-sm px-4 py-2 font-semibold rounded-lg"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Stickers
+        </motion.button>
+      </Link>
+
       <section 
         ref={heroRef}
         className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16"
@@ -171,12 +181,13 @@ const LandingPage = () => {
             </p>
           </div>
 
-          <div ref={bentoRef} className="bento-grid grid grid-cols-1 gap-6 max-w-6xl mx-auto">
+          <div ref={bentoRef} className="bento-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <FeaturesTile />
             <ImpactTile />
-            <StickersTile />
-            <ThemeToggleTile />
-            <FooterTile />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:col-span-3">
+              <ThemeToggleTile />
+              <FooterTile />
+            </div>
           </div>
         </div>
       </section>

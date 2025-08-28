@@ -1,9 +1,8 @@
-/* Retro-Futuristic Design System */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Core Variables - Preserving HSL Color Theme */
+/* Core Variables */
 @layer base {
   :root {
     /* Core Background & Foreground */
@@ -96,13 +95,88 @@
     --sidebar-ring: 180 100% 50%;
   }
 
-  .dark {
-    --background: 230 35% 2%;
-    --foreground: 180 100% 95%;
-    --card: 230 25% 6%;
-    --glass: 230 30% 10%;
-    --primary-glow: 180 100% 70%;
-    --secondary-glow: 320 100% 80%;
+  [data-theme="cyber-cyan"] {
+    --primary: 180 100% 50%;
+    --secondary: 320 100% 50%;
+    --accent: 280 100% 60%;
+    --background: 230 30% 3%;
+    --foreground: 180 100% 90%;
+    --muted: 230 20% 12%;
+    --muted-foreground: 180 30% 70%;
+    --glass: 230 30% 15%;
+    --glass-border: 180 100% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%), hsl(280 100% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(320 100% 50%), hsl(220 100% 60%));
+    --gradient-bg: linear-gradient(135deg, hsl(230 30% 3%), hsl(280 50% 8%));
+    --gradient-glass: linear-gradient(135deg, hsla(230 30% 15% / 0.3), hsla(180 100% 50% / 0.1));
+    --shadow-neon: 0 0 15px hsl(180 100% 50% / 0.3);
+    --shadow-pink: 0 0 15px hsl(320 100% 50% / 0.3);
+    --shadow-purple: 0 0 20px hsl(280 100% 60% / 0.25);
+    --glow-intense: 0 0 30px hsl(180 100% 50% / 0.5);
+    --glow-soft: 0 0 10px hsl(180 100% 50% / 0.15);
+  }
+
+  [data-theme="neon-pink"] {
+    --primary: 320 100% 50%;
+    --secondary: 350 100% 60%;
+    --accent: 330 100% 65%;
+    --background: 320 30% 5%;
+    --foreground: 0 0% 95%;
+    --muted: 320 20% 15%;
+    --muted-foreground: 320 30% 70%;
+    --glass: 320 30% 10%;
+    --glass-border: 320 100% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(320 100% 50%), hsl(350 100% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(330 100% 65%), hsl(300 100% 50%));
+    --gradient-bg: linear-gradient(135deg, hsl(320 30% 5%), hsl(350 50% 10%));
+    --gradient-glass: linear-gradient(135deg, hsla(320 30% 10% / 0.3), hsla(320 100% 50% / 0.1));
+    --shadow-neon: 0 0 15px hsl(320 100% 50% / 0.3);
+    --shadow-pink: 0 0 15px hsl(350 100% 60% / 0.3);
+    --shadow-purple: 0 0 20px hsl(330 100% 65% / 0.25);
+    --glow-intense: 0 0 30px hsl(320 100% 50% / 0.5);
+    --glow-soft: 0 0 10px hsl(320 100% 50% / 0.15);
+  }
+
+  [data-theme="electric-purple"] {
+    --primary: 280 100% 60%;
+    --secondary: 270 100% 50%;
+    --accent: 290 100% 65%;
+    --background: 280 30% 5%;
+    --foreground: 0 0% 95%;
+    --muted: 280 20% 15%;
+    --muted-foreground: 280 30% 70%;
+    --glass: 280 30% 10%;
+    --glass-border: 280 100% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(280 100% 60%), hsl(270 100% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(290 100% 65%), hsl(260 100% 50%));
+    --gradient-bg: linear-gradient(135deg, hsl(280 30% 5%), hsl(270 50% 10%));
+    --gradient-glass: linear-gradient(135deg, hsla(280 30% 10% / 0.3), hsla(280 100% 60% / 0.1));
+    --shadow-neon: 0 0 15px hsl(280 100% 60% / 0.3);
+    --shadow-pink: 0 0 15px hsl(270 100% 50% / 0.3);
+    --shadow-purple: 0 0 20px hsl(290 100% 65% / 0.25);
+    --glow-intense: 0 0 30px hsl(280 100% 60% / 0.5);
+    --glow-soft: 0 0 10px hsl(280 100% 60% / 0.15);
+  }
+
+  [data-theme="matrix-green"] {
+    --primary: 120 100% 50%;
+    --secondary: 140 100% 45%;
+    --accent: 130 100% 55%;
+    --background: 120 30% 5%;
+    --foreground: 0 0% 95%;
+    --muted: 120 20% 15%;
+    --muted-foreground: 120 30% 70%;
+    --glass: 120 30% 10%;
+    --glass-border: 120 100% 50%;
+    --gradient-primary: linear-gradient(135deg, hsl(120 100% 50%), hsl(140 100% 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(130 100% 55%), hsl(110 100% 50%));
+    --gradient-bg: linear-gradient(135deg, hsl(120 30% 5%), hsl(140 50% 10%));
+    --gradient-glass: linear-gradient(135deg, hsla(120 30% 10% / 0.3), hsla(120 100% 50% / 0.1));
+    --shadow-neon: 0 0 15px hsl(120 100% 50% / 0.3);
+    --shadow-pink: 0 0 15px hsl(140 100% 45% / 0.3);
+    --shadow-purple: 0 0 20px hsl(130 100% 55% / 0.25);
+    --glow-intense: 0 0 30px hsl(120 100% 50% / 0.5);
+    --glow-soft: 0 0 10px hsl(120 100% 50% / 0.15);
   }
 }
 
@@ -114,6 +188,7 @@
 
   html {
     scroll-behavior: smooth;
+    transition: all 0.3s ease-out;
   }
 
   body {
@@ -122,6 +197,7 @@
     font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background 0.3s ease-out, color 0.3s ease-out;
   }
 
   #root {
@@ -132,8 +208,8 @@
   /* Retro Grid Pattern */
   .bg-retro-grid {
     background-image: 
-      linear-gradient(hsla(180 100% 50% / 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, hsla(180 100% 50% / 0.08) 1px, transparent 1px);
+      linear-gradient(hsla(var(--primary) / 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(var(--primary) / 0.08) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
@@ -163,45 +239,46 @@
     @apply backdrop-blur-lg border border-glass-border/20 rounded-lg;
     background: var(--gradient-glass);
     box-shadow: var(--shadow-neon);
-    transition: var(--transition-smooth);
+    transition: var(--transition-smooth), border-color 0.3s ease-out, box-shadow 0.3s ease-out;
   }
 
   .glass-card:hover {
     box-shadow: var(--glow-intense);
-    border-color: hsl(var(--cyber-cyan) / 0.4);
+    border-color: hsl(var(--primary) / 0.4);
   }
 
   /* Neon Text Effects */
   .neon-text {
     text-shadow: 
-      0 0 4px hsl(var(--cyber-cyan)),
-      0 0 8px hsl(var(--cyber-cyan)),
-      0 0 16px hsl(var(--cyber-cyan) / 0.8);
+      0 0 4px hsl(var(--primary)),
+      0 0 8px hsl(var(--primary)),
+      0 0 16px hsl(var(--primary) / 0.8);
   }
 
   .neon-text-pink {
     text-shadow: 
-      0 0 4px hsl(var(--cyber-pink)),
-      0 0 8px hsl(var(--cyber-pink)),
-      0 0 16px hsl(var(--cyber-pink) / 0.8);
+      0 0 4px hsl(var(--secondary)),
+      0 0 8px hsl(var(--secondary)),
+      0 0 16px hsl(var(--secondary) / 0.8);
   }
 
   /* Custom Text Color for Primary Glow */
   .text-primary-glow {
     color: hsl(var(--primary-glow));
+    transition: color 0.3s ease-out;
   }
 
   /* Button Variants */
   .btn-cyber {
     @apply relative overflow-hidden border border-primary/50 bg-transparent text-primary font-semibold px-6 py-3 rounded-lg;
-    background: linear-gradient(45deg, transparent, hsla(180 100% 50% / 0.15));
-    transition: var(--transition-smooth);
+    background: linear-gradient(45deg, transparent, hsla(var(--primary) / 0.15));
+    transition: var(--transition-smooth), border-color 0.3s ease-out, background 0.3s ease-out, color 0.3s ease-out;
   }
 
   .btn-cyber:hover {
     @apply border-primary text-primary-glow scale-105;
     box-shadow: var(--glow-soft);
-    background: linear-gradient(45deg, hsla(180 100% 50% / 0.15), hsla(180 100% 50% / 0.25));
+    background: linear-gradient(45deg, hsla(var(--primary) / 0.15), hsla(var(--primary) / 0.25));
   }
 
   .btn-cyber::before {
@@ -211,7 +288,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, hsla(180 100% 50% / 0.3), transparent);
+    background: linear-gradient(90deg, transparent, hsla(var(--primary) / 0.3), transparent);
     transition: var(--transition-smooth);
   }
 
@@ -221,7 +298,7 @@
 
   .btn-secondary {
     @apply border border-secondary/50 bg-transparent text-secondary font-semibold px-6 py-3 rounded-lg;
-    transition: var(--transition-smooth);
+    transition: var(--transition-smooth), border-color 0.3s ease-out, background 0.3s ease-out, color 0.3s ease-out;
   }
 
   .btn-secondary:hover {
@@ -312,6 +389,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transition: background 0.3s ease-out;
   }
 
   .text-gradient-pink {
@@ -319,6 +397,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transition: background 0.3s ease-out;
   }
 
   .will-change-transform {
@@ -329,3 +408,4 @@
     will-change: opacity;
   }
 }
+

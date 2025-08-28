@@ -1,13 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, Sun, Moon } from 'lucide-react';
 import { gsap } from 'gsap';
+import { Palette, Sparkles, Zap, Star } from 'lucide-react';
 
 const ThemeToggleTile = () => {
-  const [isDark, setIsDark] = useState(true);
   const tileRef = useRef<HTMLDivElement>(null);
+  const [selectedTheme, setSelectedTheme] = useState<string>('cyber-cyan');
 
   useEffect(() => {
+    // Load theme from localStorage or default to 'cyber-cyan'
+    const savedTheme = localStorage.getItem('theme') || 'cyber-cyan';
+    setSelectedTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
     const tile = tileRef.current;
     if (!tile) return;
 
@@ -32,36 +37,38 @@ const ThemeToggleTile = () => {
     return () => ctx.revert();
   }, []);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    
-    // GSAP theme transition animation
+  const themes = [
+    { name: 'Cyber Cyan', value: 'cyber-cyan', color: '#00FFFF', bg: 'from-cyan-500/20 to-cyan-600/20', icon: Palette },
+    { name: 'Neon Pink', value: 'neon-pink', color: '#FF00FF', bg: 'from-pink-500/20 to-pink-600/20', icon: Sparkles },
+    { name: 'Electric Purple', value: 'electric-purple', color: '#8A2BE2', bg: 'from-purple-500/20 to-purple-600/20', icon: Zap },
+    { name: 'Matrix Green', value: 'matrix-green', color: '#39FF14', bg: 'from-green-500/20 to-green-600/20', icon: Star },
+  ];
+
+  const handleThemeChange = (theme: string) => {
+    setSelectedTheme(theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    // GSAP transition for smooth theme change
     gsap.to(document.documentElement, {
       duration: 0.5,
       ease: "power2.inOut",
-      onComplete: () => {
-        document.documentElement.classList.toggle('dark');
-      }
     });
   };
 
-  const themes = [
-    { name: 'Cyber Cyan', color: '#00FFFF', bg: 'from-cyan-500/20 to-cyan-600/20' },
-    { name: 'Neon Pink', color: '#FF00FF', bg: 'from-pink-500/20 to-pink-600/20' },
-    { name: 'Electric Purple', color: '#8A2BE2', bg: 'from-purple-500/20 to-purple-600/20' },
-    { name: 'Matrix Green', color: '#39FF14', bg: 'from-green-500/20 to-green-600/20' },
-  ];
+  const handleResetTheme = () => {
+    handleThemeChange('cyber-cyan');
+  };
 
   return (
     <motion.div
       ref={tileRef}
-      className="bento-item group"
+      className="bento-item glass-card min-h-[300px]"
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.3 }}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-muted/10 to-accent/10" />
       
-      <div className="relative z-10 h-full flex flex-col">
+      <div className="relative z-10 h-full flex flex-col p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-3 rounded-lg bg-accent/20 border border-accent/30">
             <Palette className="w-6 h-6 text-accent" />
@@ -77,46 +84,23 @@ const ThemeToggleTile = () => {
         </div>
 
         <div className="space-y-4 flex-1">
-          {/* Dark/Light Toggle */}
-          <div className="glass-card p-4 border border-accent/30">
-            <div className="flex items-center justify-between mb-3">
-              <span className="font-medium">Mode</span>
-              <motion.button
-                onClick={toggleTheme}
-                className="relative w-12 h-6 bg-border rounded-full p-1"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.div
-                  className="w-4 h-4 bg-primary rounded-full flex items-center justify-center"
-                  animate={{ x: isDark ? 0 : 24 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                >
-                  {isDark ? (
-                    <Moon className="w-3 h-3 text-background" />
-                  ) : (
-                    <Sun className="w-3 h-3 text-background" />
-                  )}
-                </motion.div>
-              </motion.button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {isDark ? 'Dark mode active' : 'Light mode active'}
-            </p>
-          </div>
-
           {/* Color Themes */}
           <div className="glass-card p-4 border border-accent/30">
             <h4 className="font-medium mb-3">Retro Palettes</h4>
             <div className="grid grid-cols-2 gap-2">
-              {themes.map((theme, index) => (
+              {themes.map((theme) => (
                 <motion.button
-                  key={theme.name}
-                  className={`p-2 rounded-lg border border-border bg-gradient-to-r ${theme.bg} text-xs font-medium text-center transition-all duration-200 hover:border-primary/50`}
+                  key={theme.value}
+                  className={`p-2 rounded-lg border text-xs font-medium text-center transition-all duration-200 ${
+                    selectedTheme === theme.value
+                      ? 'border-primary bg-gradient-to-r ' + theme.bg
+                      : 'border-border bg-gradient-to-r ' + theme.bg
+                  }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleThemeChange(theme.value)}
                   style={{ 
-                    boxShadow: `0 0 10px ${theme.color}20` 
+                    boxShadow: selectedTheme === theme.value ? `0 0 10px ${theme.color}50` : `0 0 5px ${theme.color}20`
                   }}
                 >
                   <div 
@@ -135,6 +119,7 @@ const ThemeToggleTile = () => {
               className="w-full btn-cyber text-sm py-2"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => localStorage.setItem('theme', selectedTheme)}
             >
               Save Theme
             </motion.button>
@@ -142,6 +127,7 @@ const ThemeToggleTile = () => {
               className="w-full border border-secondary/50 bg-transparent text-secondary px-4 py-2 rounded-lg text-sm hover:bg-secondary/10 transition-colors"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={handleResetTheme}
             >
               Reset
             </motion.button>
