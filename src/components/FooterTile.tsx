@@ -1,12 +1,11 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Twitter, Globe, Heart, ArrowUp } from 'lucide-react';
 import { gsap } from 'gsap';
+import { Link } from 'react-router-dom';
 
 const FooterTile = () => {
   const tileRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const tile = tileRef.current;
@@ -33,18 +32,6 @@ const FooterTile = () => {
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    const updateScrollProgress = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', updateScrollProgress);
-    return () => window.removeEventListener('scroll', updateScrollProgress);
-  }, []);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -55,111 +42,99 @@ const FooterTile = () => {
     { icon: Globe, label: 'Website', href: '#', color: 'hover:text-green-400' },
   ];
 
+  const navLinks = [
+    { label: 'Create', href: '/create' },
+    { label: 'Features', href: '#features' },
+    { label: 'Pricing', href: '#pricing' },
+    { label: 'Docs', href: '#docs' },
+  ];
+
   return (
     <motion.div
       ref={tileRef}
-      className="bento-item bento-item-wide"
+      className="bento-item bento-item-wide glass-card border border-border/30"
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background/20 opacity-90" />
       
-      {/* Scroll Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-border rounded-t-xl overflow-hidden">
-        <motion.div
-          ref={progressRef}
-          className="h-full bg-gradient-to-r from-primary to-secondary"
-          style={{ width: `${scrollProgress}%` }}
-          transition={{ type: "spring", stiffness: 400, damping: 40 }}
-        />
-      </div>
-      
-      <div className="relative z-10 h-full flex flex-col">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="font-orbitron font-bold fluid-text-xl text-gradient">
+      <div className="relative z-10 h-full flex flex-col p-6 md:p-8">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+          <div className="text-center md:text-left mb-4 md:mb-0">
+            <h3 className="font-orbitron font-bold fluid-text-xl text-gradient mb-2">
               DesignFlow AI
             </h3>
             <p className="text-muted-foreground fluid-text-sm">
-              Transform designs into code
+              Transform designs into code with AI precision
             </p>
           </div>
           
           <motion.button
             onClick={scrollToTop}
-            className="p-3 rounded-full bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-colors"
+            className="p-2 rounded-full bg-primary/20 border border-primary/30 hover:bg-primary/30 transition-colors"
             whileHover={{ scale: 1.1, y: -2 }}
             whileTap={{ scale: 0.9 }}
+            aria-label="Scroll to top"
           >
             <ArrowUp className="w-5 h-5 text-primary" />
           </motion.button>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h4 className="font-semibold text-primary mb-3">Product</h4>
-              <div className="space-y-2">
-                {['Features', 'Pricing', 'API', 'Documentation'].map((item) => (
-                  <motion.a
-                    key={item}
-                    href="#"
-                    className="block text-muted-foreground hover:text-primary transition-colors text-sm"
-                    whileHover={{ x: 5 }}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <h4 className="font-semibold text-primary fluid-text-base mb-4">Quick Links</h4>
+            <div className="space-y-2">
+              {navLinks.map((link) => (
+                <motion.div
+                  key={link.label}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link
+                    to={link.href}
+                    className="block text-muted-foreground hover:text-primary transition-colors fluid-text-sm"
                   >
-                    {item}
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-secondary mb-3">Company</h4>
-              <div className="space-y-2">
-                {['About', 'Blog', 'Careers', 'Contact'].map((item) => (
-                  <motion.a
-                    key={item}
-                    href="#"
-                    className="block text-muted-foreground hover:text-secondary transition-colors text-sm"
-                    whileHover={{ x: 5 }}
-                  >
-                    {item}
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-accent mb-3">Connect</h4>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <motion.a
-                    key={social.label}
-                    href={social.href}
-                    className={`p-2 rounded-lg bg-muted/10 border border-border ${social.color} transition-colors`}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label={social.label}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </motion.a>
-                ))}
-              </div>
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </div>
 
-          <div className="pt-6 mt-6 border-t border-border">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>Made with</span>
-                <Heart className="w-4 h-4 text-red-500 animate-pulse" />
-                <span>by the DesignFlow team</span>
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                © 2024 DesignFlow AI. All rights reserved.
-              </div>
+          <div>
+            <h4 className="font-semibold text-secondary fluid-text-base mb-4">Connect</h4>
+            <div className="flex gap-3">
+              {socialLinks.map((social) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  className={`p-2 rounded-lg bg-muted/10 border border-border ${social.color} transition-colors`}
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5" />
+                </motion.a>
+              ))}
             </div>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-accent fluid-text-base mb-4">About</h4>
+            <p className="text-muted-foreground fluid-text-sm">
+              DesignFlow AI empowers creators to build stunning applications effortlessly.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-border/30 flex flex-col items-center gap-3">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span>Made with</span>
+            <Heart className="w-4 h-4 text-red-500 animate-pulse" />
+            <span>by the DesignFlow team</span>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            © 2025 DesignFlow AI. All rights reserved.
           </div>
         </div>
       </div>
