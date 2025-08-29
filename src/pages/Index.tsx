@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
@@ -10,6 +11,7 @@ import ImpactTile from '../components/ImpactTile';
 import ThemeToggleTile from '../components/ThemeToggleTile';
 import FooterTile from '../components/FooterTile';
 import LoadingSpinner from '../components/LoadingSpinner';
+import RealisticRobot from './RealisticRobot'; // ✅ Import the robot component
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -98,6 +100,12 @@ const LandingPage = () => {
           Stickers
         </motion.button>
       </Link>
+
+      {/* === REALISTIC ROBOT - Positioned on Right Side === */}
+      <div className="fixed top-1/3 right-12 z-20 hidden lg:block w-[300px] h-[300px] pointer-events-none">
+        <RealisticRobot />
+      </div>
+      {/* ================================================ */}
 
       <section 
         ref={heroRef}
@@ -192,6 +200,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Floating Background Orbs */}
       <div className="fixed top-20 left-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse pointer-events-none" />
       <div className="fixed bottom-20 right-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl animate-pulse pointer-events-none" style={{ animationDelay: '1s' }} />
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/3 rounded-full blur-3xl animate-pulse pointer-events-none" style={{ animationDelay: '2s' }} />
